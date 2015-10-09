@@ -19,6 +19,7 @@
 		226544771BC32F980004DFCF /* ActivityData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226544761BC32F980004DFCF /* ActivityData.swift */; settings = {ASSET_TAGS = (); }; };
 		226544791BC32FA20004DFCF /* ActivityItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226544781BC32FA20004DFCF /* ActivityItem.swift */; settings = {ASSET_TAGS = (); }; };
 		2265447B1BC32FB00004DFCF /* ActivityItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2265447A1BC32FB00004DFCF /* ActivityItemCell.swift */; settings = {ASSET_TAGS = (); }; };
+		2265447F1BC5DE500004DFCF /* TimePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2265447E1BC5DE500004DFCF /* TimePickerViewController.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		226544761BC32F980004DFCF /* ActivityData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityData.swift; path = ../ActivityData.swift; sourceTree = "<group>"; };
 		226544781BC32FA20004DFCF /* ActivityItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityItem.swift; path = ../ActivityItem.swift; sourceTree = "<group>"; };
 		2265447A1BC32FB00004DFCF /* ActivityItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityItemCell.swift; path = ../ActivityItemCell.swift; sourceTree = "<group>"; };
+		2265447E1BC5DE500004DFCF /* TimePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimePickerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +89,7 @@
 		226544351BC32E300004DFCF = {
 			isa = PBXGroup;
 			children = (
+				2265447E1BC5DE500004DFCF /* TimePickerViewController.swift */,
 				226544401BC32E300004DFCF /* Streaker */,
 				226544581BC32E300004DFCF /* StreakerTests */,
 				226544631BC32E300004DFCF /* StreakerUITests */,
@@ -275,6 +278,7 @@
 				2265447B1BC32FB00004DFCF /* ActivityItemCell.swift in Sources */,
 				226544421BC32E300004DFCF /* AppDelegate.swift in Sources */,
 				226544791BC32FA20004DFCF /* ActivityItem.swift in Sources */,
+				2265447F1BC5DE500004DFCF /* TimePickerViewController.swift in Sources */,
 				226544751BC32F8B0004DFCF /* AddActivityViewController.swift in Sources */,
 				226544771BC32F980004DFCF /* ActivityData.swift in Sources */,
 			);
@@ -501,6 +505,7 @@
 				2265446B1BC32E300004DFCF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2265446C1BC32E300004DFCF /* Build configuration list for PBXNativeTarget "StreakerTests" */ = {
 			isa = XCConfigurationList;
@@ -509,6 +514,7 @@
 				2265446E1BC32E300004DFCF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2265446F1BC32E300004DFCF /* Build configuration list for PBXNativeTarget "StreakerUITests" */ = {
 			isa = XCConfigurationList;
@@ -517,6 +523,7 @@
 				226544711BC32E300004DFCF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

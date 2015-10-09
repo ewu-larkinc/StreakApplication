@@ -20,8 +20,9 @@ class ActivityData {
     
     
     var activities: [ActivityItem]
+    var currentlySelectedTime: NSDate?
     var selectedActivity: ActivityItem?
-    let entityKeyType = "EntityActivity"
+    let entityKeyName = "EntityActivity"
     let entityKeyTitle = "title"
     let entityKeyDescription = "descript"
     let entityBaseCount = "streakCount"
@@ -36,16 +37,36 @@ class ActivityData {
         saveActivity(newItem)
     }
     
+    func deleteActivity(index: Int) -> Bool {
+        
+        let maxIndex = activities.count-1
+        if index < 0 || index > maxIndex {
+            return false
+        }
+        
+        deleteFromCoreData(activities[index])
+        activities.removeAtIndex(index)
+        return true
+    }
+    
+    func setCurrentlySelectedTime(time: NSDate) {
+        currentlySelectedTime = time
+    }
+    
+    func getCurrentlySelectedTime() -> NSDate? {
+        return currentlySelectedTime
+    }
+    
     
     //#MARK: - Core Data Methods
     func saveActivity(item: ActivityItem) {
         
-        print("Testing... adding item \(item.getTitle()) to core data")
+        print("TESTING adding item \(item.getTitle()) to core data")
         
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext
         
-        let entityDescription = NSEntityDescription.entityForName(entityKeyType, inManagedObjectContext: managedContext)
+        let entityDescription = NSEntityDescription.entityForName(entityKeyName, inManagedObjectContext: managedContext)
         let newEntity = NSManagedObject(entity: entityDescription!, insertIntoManagedObjectContext: managedContext)
         
         newEntity.setValue(item.getTitle(), forKey: entityKeyTitle)
@@ -65,7 +86,7 @@ class ActivityData {
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext
         
-        let fetchRequest = NSFetchRequest(entityName: entityKeyType)
+        let fetchRequest = NSFetchRequest(entityName: entityKeyName)
         
         let fetchedResults = (try! managedContext.executeFetchRequest(fetchRequest)) as! [NSManagedObject]
         
@@ -75,7 +96,7 @@ class ActivityData {
     func readInFromCoreData() {
         
         let cdItems = fetchFromCoreData()
-        print("Core data count (fetched) is \(cdItems.count)")
+        print("TESTING Core data count (fetched) is \(cdItems.count)")
         
         for item in cdItems {
             
@@ -84,9 +105,31 @@ class ActivityData {
             let lastUpdatedDate = item.valueForKey(entityBaseDate) as! NSDate
             let baseCount = item.valueForKey(entityBaseCount) as! Int
             
-            let newActivity = ActivityItem(title: title, description: description, baseDate: lastUpdatedDate, streakCount: baseCount)
+            let newActivity = ActivityItem(title: title, description: description, baseDate: lastUpdatedDate, streakCount: baseCount, preferredTime: lastUpdatedDate)
             
             activities.append(newActivity)
+        }
+        
+    }
+    
+    func deleteFromCoreData(item: ActivityItem) {
+        
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let managedContext = appDelegate.managedObjectContext
+        
+        let fetchRequest = NSFetchRequest(entityName: entityKeyName)
+        let predicate = NSPredicate(format: "title == %@", item.getTitle())
+        fetchRequest.predicate = predicate
+        
+        let fetchedResult = (try! managedContext.executeFetchRequest(fetchRequest)) as! [NSManagedObject]
+        
+        
+        managedContext.deleteObject(fetchedResult[0])
+        
+        do {
+            try managedContext.save()
+        } catch {
+            print("Could not save \(error)")
         }
         
     }
@@ -96,7 +139,7 @@ class ActivityData {
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext
         
-        let fetchRequest = NSFetchRequest(entityName: entityKeyType)
+        let fetchRequest = NSFetchRequest(entityName: entityKeyName)
         let predicate = NSPredicate(format: "title == %@", item.getTitle())
         fetchRequest.predicate = predicate
         
@@ -109,9 +152,9 @@ class ActivityData {
             let baseDate = item.getBaseDate()
             
             
-            print("UpdateActivityInCoreData found a matching entity: \(title)")
-            print("updating lastUpdatedDate to \(baseDate)")
-            print("updating streakCount to \(item.getStreakCount())")
+            print("TESTING UpdateActivityInCoreData found a matching entity: \(title)")
+            print("TESTING updating lastUpdatedDate to \(baseDate)")
+            print("TESTING updating streakCount to \(item.getStreakCount())")
             
             fetchedResults[0].setValue(baseDate, forKey: "baseDate")
             fetchedResults[0].setValue(item.getStreakCount(), forKey: "streakCount")

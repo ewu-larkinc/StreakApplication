@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 class ActivityItemCell : UITableViewCell {
+    
     @IBAction func selectNoBtn(sender: UIButton) {
         let aData = ActivityData.sharedInstance
         let item = aData.activities[activityItemIndex]
@@ -29,6 +30,7 @@ class ActivityItemCell : UITableViewCell {
     @IBOutlet weak var promptLabel: UILabel!
     @IBOutlet weak var descriptLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var remindTimeLabel: UILabel!
     
     var activityItemIndex : Int = 0
     

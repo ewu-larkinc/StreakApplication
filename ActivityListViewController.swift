@@ -31,9 +31,9 @@ class ListActivityViewController : UIViewController, UITableViewDataSource, UITa
     }
     
     override func viewWillAppear(animated: Bool) {
-        //tableView.reloadData()
         let aData = ActivityData.sharedInstance
         activities = aData.activities
+        tableView.reloadData()
     }
     
     func updateTableView(notification: NSNotification) {
@@ -42,29 +42,32 @@ class ListActivityViewController : UIViewController, UITableViewDataSource, UITa
     
     //#MARK: - TableView Methods
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let aData = ActivityData.sharedInstance
-        let currentItem = aData.activities[indexPath.row]
         
+        let currentItem = activities[indexPath.row]
         return currentItem.getDisplayHeight()
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellID) as! ActivityItemCell
-        //let aData = ActivityData.sharedInstance
-        let currentActivity = activities[indexPath.row]
         
-        print("Testing... adding new cell to tableview")
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellID) as! ActivityItemCell
+        let currentActivity = activities[indexPath.row]
         
         cell.activityItemIndex = indexPath.row
         cell.titleLabel.text = currentActivity.getTitle()
         cell.descriptLabel.text = currentActivity.getDescription()
         cell.streakLabel.text = String(currentActivity.getStreakCount())
-        //cell.promptLabel.text = currentActivity.dequeueConfirmString()
+        cell.remindTimeLabel.text = "@" + currentActivity.getPreferredTimeString()
         
-        print("New cell item title is \(currentActivity.getTitle())")
+        print("TESTING adding new cell to tableview")
+        print("TESTING New cell item title is \(currentActivity.getTitle())")
+        
         
         if currentActivity.getDisplayMode() == DisplayMode.ViewActivity.rawValue {
-            print("Display mode set to View Activity")
+            print("TESTING Display mode set to View Activity")
             cell.noBtn.hidden = true
             cell.noBtn.enabled = false
             cell.yesBtn.hidden = true
@@ -72,7 +75,7 @@ class ListActivityViewController : UIViewController, UITableViewDataSource, UITa
             cell.promptLabel.hidden = true
             
         } else {
-            print("Display mode set to Confirm Activity")
+            print("TESTING Display mode set to Confirm Activity")
             cell.noBtn.hidden = false
             cell.noBtn.enabled = true
             cell.yesBtn.hidden = false
@@ -80,25 +83,35 @@ class ListActivityViewController : UIViewController, UITableViewDataSource, UITa
             cell.promptLabel.hidden = false
             
             
-            var promptText : String
-            if let temp = currentActivity.dequeueConfirmString() {
-                promptText = currentActivity.capitalizeEntireString(temp)
+            if let confirmString = currentActivity.dequeueConfirmString() {
+                cell.promptLabel.text = confirmString
             } else {
-                promptText = currentActivity.getDescription()
+                cell.promptLabel.text = ""
+                currentActivity.updateDisplayMode()
             }
-            
-            cell.promptLabel.text = promptText
+        
         }
-        
-        
         
         return cell
     }
     
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //let aData = ActivityData.sharedInstance
-        print("Testing... tableview count is \(activities.count)")
+        
         return activities.count
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        if editingStyle == UITableViewCellEditingStyle.Delete {
+            let activityData = ActivityData.sharedInstance
+            activityData.deleteActivity(indexPath.row)
+            tableView.reloadData()
+        }
+        
     }
     
 }
