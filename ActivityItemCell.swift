@@ -2,7 +2,7 @@
 //  ActivityItemCell.swift
 //  Streaker
 //
-//  Created by Chris Larkin on 10/5/15.
+//  Created by Chris Larkin.
 //  Copyright © 2015 CLProductions. All rights reserved.
 //
 

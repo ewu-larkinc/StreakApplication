@@ -395,7 +395,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="coloredcurved" translatesAutoresizingMaskIntoConstraints="NO" id="PJh-V9-w5F">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="streakBG2" translatesAutoresizingMaskIntoConstraints="NO" id="PJh-V9-w5F">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <animations/>
                             </imageView>
@@ -407,6 +407,32 @@
                                     <action selector="AddActivitySelected:" destination="KIa-xj-3fE" eventType="touchUpInside" id="dm2-pr-scD"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Streak" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uch-ha-L4K">
+                                <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" name="KohinoorBangla-Regular" family="Kohinoor Bangla" pointSize="82"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8EO-x5-dde">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <animations/>
+                                <color key="backgroundColor" red="0.25793087120000002" green="0.25793087120000002" blue="0.25793087120000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="Thonburi" family="Thonburi" pointSize="15"/>
+                                <state key="normal" title="Submit">
+                                    <color key="titleColor" red="0.86274509799999999" green="1" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="submitBtnSelected:" destination="KIa-xj-3fE" eventType="touchUpInside" id="9gq-OG-AYY"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Track your self-improvement activities, and stay motivated by watching your streaks grow." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RlZ-hU-cGp">
+                                <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" name="Thonburi" family="Thonburi" pointSize="10"/>
+                                <color key="textColor" red="0.86274509799999999" green="1" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="i6S-nB-I9N">
                                 <rect key="frame" x="-25" y="-30" width="97" height="30"/>
                                 <animations/>
@@ -456,13 +482,6 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Streak" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uch-ha-L4K">
-                                <rect key="frame" x="-42" y="-21" width="42" height="21"/>
-                                <animations/>
-                                <fontDescription key="fontDescription" name="KohinoorBangla-Regular" family="Kohinoor Bangla" pointSize="82"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" enabled="NO" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RPh-U0-zcR">
                                 <rect key="frame" x="-42" y="-21" width="42" height="21"/>
                                 <animations/>
@@ -489,25 +508,6 @@
                                     <segue destination="Mtb-rs-Dsf" kind="show" identifier="timePickerSegue" id="MHd-YB-dkk"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8EO-x5-dde">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <animations/>
-                                <color key="backgroundColor" red="0.25793087120000002" green="0.25793087120000002" blue="0.25793087120000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" name="Thonburi" family="Thonburi" pointSize="15"/>
-                                <state key="normal" title="Submit">
-                                    <color key="titleColor" red="0.86274509799999999" green="1" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="submitBtnSelected:" destination="KIa-xj-3fE" eventType="touchUpInside" id="9gq-OG-AYY"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Track your self-improvement activities, and stay motivated by watching your streaks grow." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RlZ-hU-cGp">
-                                <rect key="frame" x="-42" y="-21" width="42" height="21"/>
-                                <animations/>
-                                <fontDescription key="fontDescription" name="Thonburi" family="Thonburi" pointSize="10"/>
-                                <color key="textColor" red="0.86274509799999999" green="1" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -532,7 +532,7 @@
                             <constraint firstItem="Uch-ha-L4K" firstAttribute="centerX" secondItem="3pP-7g-pQk" secondAttribute="centerX" id="K9e-qB-71c"/>
                             <constraint firstItem="PJh-V9-w5F" firstAttribute="top" secondItem="CMU-1e-LMK" secondAttribute="bottom" id="KNf-1K-MsN"/>
                             <constraint firstItem="8EO-x5-dde" firstAttribute="top" secondItem="gxg-0m-vus" secondAttribute="bottom" constant="13" id="NFc-ds-fDE">
-                                <variation key="heightClass=regular-widthClass=compact" constant="146"/>
+                                <variation key="heightClass=regular-widthClass=compact" constant="118"/>
                             </constraint>
                             <constraint firstItem="gxg-0m-vus" firstAttribute="leading" secondItem="3pP-7g-pQk" secondAttribute="leading" constant="20" id="S9C-jW-VqS"/>
                             <constraint firstItem="gxg-0m-vus" firstAttribute="top" secondItem="sEW-2T-lEK" secondAttribute="bottom" constant="33" id="TNv-D8-Tax"/>
@@ -557,90 +557,90 @@
                             <mask key="subviews">
                                 <exclude reference="PJh-V9-w5F"/>
                                 <exclude reference="yM6-Ex-a7f"/>
+                                <exclude reference="Uch-ha-L4K"/>
+                                <exclude reference="8EO-x5-dde"/>
+                                <exclude reference="RlZ-hU-cGp"/>
                                 <exclude reference="i6S-nB-I9N"/>
                                 <exclude reference="sEW-2T-lEK"/>
                                 <exclude reference="vr6-K7-gB4"/>
-                                <exclude reference="Uch-ha-L4K"/>
                                 <exclude reference="RPh-U0-zcR"/>
                                 <exclude reference="7HZ-Rv-DAd"/>
                                 <exclude reference="gxg-0m-vus"/>
-                                <exclude reference="8EO-x5-dde"/>
-                                <exclude reference="RlZ-hU-cGp"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="KNf-1K-MsN"/>
-                                <exclude reference="ZGj-pk-kmc"/>
-                                <exclude reference="gvE-oR-HMB"/>
-                                <exclude reference="K9e-qB-71c"/>
-                                <exclude reference="cnI-Dw-0N7"/>
-                                <exclude reference="2Vc-vR-IV1"/>
-                                <exclude reference="44e-YT-vSK"/>
-                                <exclude reference="cYh-Up-lJo"/>
-                                <exclude reference="7mp-KJ-Hdk"/>
-                                <exclude reference="hwS-Ii-yxq"/>
-                                <exclude reference="dUV-a1-mvd"/>
+                                <exclude reference="HLG-Mc-agC"/>
+                                <exclude reference="ITa-vz-WlH"/>
                                 <exclude reference="BIX-63-KeR"/>
                                 <exclude reference="X9d-Y3-aby"/>
                                 <exclude reference="v3A-2p-J05"/>
-                                <exclude reference="Udk-zV-dOB"/>
                                 <exclude reference="C59-rH-ufb"/>
                                 <exclude reference="Iz8-Sa-Z2J"/>
                                 <exclude reference="kKP-Kn-G18"/>
                                 <exclude reference="wk7-7J-bvt"/>
-                                <exclude reference="lg0-KV-q5Z"/>
-                                <exclude reference="8Rh-1q-x9Y"/>
-                                <exclude reference="S9C-jW-VqS"/>
-                                <exclude reference="TNv-D8-Tax"/>
                                 <exclude reference="4bT-Ej-r7k"/>
                                 <exclude reference="DoR-CM-YWr"/>
                                 <exclude reference="NFc-ds-fDE"/>
-                                <exclude reference="HLG-Mc-agC"/>
-                                <exclude reference="ITa-vz-WlH"/>
+                                <exclude reference="8Rh-1q-x9Y"/>
+                                <exclude reference="S9C-jW-VqS"/>
+                                <exclude reference="TNv-D8-Tax"/>
+                                <exclude reference="7mp-KJ-Hdk"/>
+                                <exclude reference="hwS-Ii-yxq"/>
+                                <exclude reference="lg0-KV-q5Z"/>
+                                <exclude reference="Udk-zV-dOB"/>
+                                <exclude reference="2Vc-vR-IV1"/>
+                                <exclude reference="44e-YT-vSK"/>
+                                <exclude reference="cYh-Up-lJo"/>
+                                <exclude reference="K9e-qB-71c"/>
+                                <exclude reference="cnI-Dw-0N7"/>
+                                <exclude reference="dUV-a1-mvd"/>
+                                <exclude reference="KNf-1K-MsN"/>
+                                <exclude reference="ZGj-pk-kmc"/>
+                                <exclude reference="gvE-oR-HMB"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
                             <mask key="subviews">
                                 <include reference="PJh-V9-w5F"/>
                                 <include reference="yM6-Ex-a7f"/>
+                                <include reference="Uch-ha-L4K"/>
+                                <include reference="8EO-x5-dde"/>
+                                <include reference="RlZ-hU-cGp"/>
                                 <include reference="i6S-nB-I9N"/>
                                 <include reference="sEW-2T-lEK"/>
                                 <include reference="vr6-K7-gB4"/>
-                                <include reference="Uch-ha-L4K"/>
                                 <include reference="RPh-U0-zcR"/>
                                 <include reference="7HZ-Rv-DAd"/>
                                 <include reference="gxg-0m-vus"/>
-                                <include reference="8EO-x5-dde"/>
-                                <include reference="RlZ-hU-cGp"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="KNf-1K-MsN"/>
-                                <include reference="ZGj-pk-kmc"/>
-                                <include reference="gvE-oR-HMB"/>
-                                <include reference="K9e-qB-71c"/>
-                                <include reference="cnI-Dw-0N7"/>
-                                <include reference="2Vc-vR-IV1"/>
-                                <include reference="44e-YT-vSK"/>
-                                <include reference="cYh-Up-lJo"/>
-                                <include reference="7mp-KJ-Hdk"/>
-                                <include reference="hwS-Ii-yxq"/>
-                                <include reference="dUV-a1-mvd"/>
+                                <include reference="HLG-Mc-agC"/>
+                                <include reference="ITa-vz-WlH"/>
                                 <include reference="BIX-63-KeR"/>
                                 <include reference="X9d-Y3-aby"/>
                                 <include reference="v3A-2p-J05"/>
-                                <include reference="Udk-zV-dOB"/>
                                 <include reference="C59-rH-ufb"/>
                                 <include reference="Iz8-Sa-Z2J"/>
                                 <include reference="kKP-Kn-G18"/>
                                 <include reference="wk7-7J-bvt"/>
-                                <include reference="lg0-KV-q5Z"/>
-                                <include reference="8Rh-1q-x9Y"/>
-                                <include reference="S9C-jW-VqS"/>
-                                <include reference="TNv-D8-Tax"/>
                                 <include reference="4bT-Ej-r7k"/>
                                 <include reference="DoR-CM-YWr"/>
                                 <include reference="NFc-ds-fDE"/>
-                                <include reference="HLG-Mc-agC"/>
-                                <include reference="ITa-vz-WlH"/>
+                                <include reference="8Rh-1q-x9Y"/>
+                                <include reference="S9C-jW-VqS"/>
+                                <include reference="TNv-D8-Tax"/>
+                                <include reference="7mp-KJ-Hdk"/>
+                                <include reference="hwS-Ii-yxq"/>
+                                <include reference="lg0-KV-q5Z"/>
+                                <include reference="Udk-zV-dOB"/>
+                                <include reference="2Vc-vR-IV1"/>
+                                <include reference="44e-YT-vSK"/>
+                                <include reference="cYh-Up-lJo"/>
+                                <include reference="K9e-qB-71c"/>
+                                <include reference="cnI-Dw-0N7"/>
+                                <include reference="dUV-a1-mvd"/>
+                                <include reference="KNf-1K-MsN"/>
+                                <include reference="ZGj-pk-kmc"/>
+                                <include reference="gvE-oR-HMB"/>
                             </mask>
                         </variation>
                     </view>
@@ -683,9 +683,9 @@
     <resources>
         <image name="addBtn2" width="127" height="127"/>
         <image name="checkButton" width="66" height="30"/>
-        <image name="coloredcurved" width="750" height="1334"/>
         <image name="listIcon" width="30" height="19"/>
         <image name="plusIcon" width="19" height="19"/>
+        <image name="streakBG2" width="750" height="1334"/>
         <image name="xButton" width="66" height="30"/>
     </resources>
 </document>

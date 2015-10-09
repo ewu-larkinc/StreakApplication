@@ -2,7 +2,7 @@
 //  ActivityData.swift
 //  Streaker
 //
-//  Created by Chris Larkin on 10/5/15.
+//  Created by Chris Larkin.
 //  Copyright © 2015 CLProductions. All rights reserved.
 //
 
@@ -105,7 +105,7 @@ class ActivityData {
             let lastUpdatedDate = item.valueForKey(entityBaseDate) as! NSDate
             let baseCount = item.valueForKey(entityBaseCount) as! Int
             
-            let newActivity = ActivityItem(title: title, description: description, baseDate: lastUpdatedDate, streakCount: baseCount, preferredTime: lastUpdatedDate)
+            let newActivity = ActivityItem(title: title, description: description, baseDate: lastUpdatedDate, streakCount: baseCount)
             
             activities.append(newActivity)
         }

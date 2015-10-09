@@ -2,7 +2,7 @@
 //  ActivityItem.swift
 //  Streaker
 //
-//  Created by Chris Larkin on 10/5/15.
+//  Created by Chris Larkin.
 //  Copyright © 2015 CLProductions. All rights reserved.
 //
 
@@ -33,7 +33,6 @@ class ActivityItem {
         confirmQueue = [NSDate]()
         lastUpdatedDates = [NSDate]()
         lastUpdatedDates.append(baseDate)
-        
         displayMode = DisplayMode.ViewActivity.rawValue
         displayHeight = 80.0
         buildConfirmQueue()
@@ -55,10 +54,11 @@ class ActivityItem {
         let daySpan = 24 * 60 * 60 as NSTimeInterval
         lastUpdatedDates = [NSDate]()
         lastUpdatedDates.append(NSDate(timeIntervalSinceNow: -daySpan*3))
+        
         streakCount = 0
         confirmQueue = [NSDate]()
-        
         displayMode = DisplayMode.ViewActivity.rawValue
+        setPreferredTimeOnBaseDate(preferredTime)
         buildConfirmQueue()
         
         print("TESTING current baseDate = \(lastUpdatedDates[lastUpdatedDates.count-1])")
@@ -172,10 +172,11 @@ class ActivityItem {
         preferredTime = date
     }*/
     
-    func setPreferredTimeOnBaseDate(date: NSDate, preferredTime: NSDate) {
+    func setPreferredTimeOnBaseDate(preferredTime: NSDate) {
         
+        let baseDate = lastUpdatedDates[lastUpdatedDates.count-1]
         let calendar = NSCalendar.currentCalendar()
-        let baseDateComponents = calendar.components([.Day, .Month, .Year], fromDate: date)
+        let baseDateComponents = calendar.components([.Day, .Month, .Year], fromDate: baseDate)
         let preferredTimeComponents = calendar.components([.Second, .Minute, .Hour], fromDate: preferredTime)
         
         baseDateComponents.second = preferredTimeComponents.second

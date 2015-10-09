@@ -2,7 +2,7 @@
 //  ActivityListViewController.swift
 //  Streaker
 //
-//  Created by Chris Larkin on 10/5/15.
+//  Created by Chris Larkin.
 //  Copyright © 2015 CLProductions. All rights reserved.
 //
 
@@ -109,6 +109,7 @@ class ListActivityViewController : UIViewController, UITableViewDataSource, UITa
         if editingStyle == UITableViewCellEditingStyle.Delete {
             let activityData = ActivityData.sharedInstance
             activityData.deleteActivity(indexPath.row)
+            activities = activityData.activities
             tableView.reloadData()
         }
         
