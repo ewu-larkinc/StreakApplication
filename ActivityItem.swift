@@ -42,6 +42,8 @@ class ActivityItem {
         if confirmQueue.count > 0 {
             switchDisplayMode()
         }
+        
+        registerLocalNotification()
     }
     
     init(title: String, description: String, preferredTime: NSDate) {
@@ -66,6 +68,8 @@ class ActivityItem {
         if confirmQueue.count > 0 {
             switchDisplayMode()
         }
+        
+        registerLocalNotification()
     }
     
     init() {
@@ -79,7 +83,16 @@ class ActivityItem {
         confirmQueue = [NSDate]()
     }
     
-    
+    func registerLocalNotification() {
+        let localNotification = UILocalNotification()
+        localNotification.fireDate = lastUpdatedDates[lastUpdatedDates.count-1]
+        localNotification.alertBody = "Have you \(self.title) yet today?"
+        localNotification.timeZone = NSTimeZone.defaultTimeZone()
+        localNotification.applicationIconBadgeNumber = UIApplication.sharedApplication().applicationIconBadgeNumber + 1
+        localNotification.repeatInterval = NSCalendarUnit.Day
+        
+        UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
+    }
     
     //# MARK: - Get Methods
     func getTitle() -> String {
@@ -105,10 +118,6 @@ class ActivityItem {
     func getDisplayHeight() -> CGFloat {
         return displayHeight
     }
-    
-    /*func getPreferredTime() -> NSDate {
-        return preferredTime
-    }*/
     
     func getPreferredTimeString() -> String {
         let baseDate = lastUpdatedDates[lastUpdatedDates.count-1]
@@ -168,10 +177,6 @@ class ActivityItem {
         displayHeight = height
     }
     
-    /*func setPreferredTime(date: NSDate) {
-        preferredTime = date
-    }*/
-    
     func setPreferredTimeOnBaseDate(preferredTime: NSDate) {
         
         let baseDate = lastUpdatedDates[lastUpdatedDates.count-1]
@@ -179,9 +184,12 @@ class ActivityItem {
         let baseDateComponents = calendar.components([.Day, .Month, .Year], fromDate: baseDate)
         let preferredTimeComponents = calendar.components([.Second, .Minute, .Hour], fromDate: preferredTime)
         
+        baseDateComponents.calendar = calendar
         baseDateComponents.second = preferredTimeComponents.second
         baseDateComponents.minute = preferredTimeComponents.minute
         baseDateComponents.hour = preferredTimeComponents.hour
+        
+        print("DateComponents contains: \(baseDateComponents.date)")
         
         if let newBaseDate = baseDateComponents.date {
             print("TESTING Updating basedate to reflect preferredtime. baseDate set to \(newBaseDate)")
