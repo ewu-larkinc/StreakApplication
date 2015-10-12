@@ -15,8 +15,6 @@ class TimePickerViewController : UIViewController {
         
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "hh/mm"
-        let timeString = dateFormatter.stringFromDate(datePicker.date)
-        print("Setting chosen preferred time to \(timeString)")
         
         let aData = ActivityData.sharedInstance
         aData.setCurrentlySelectedTime(datePicker.date)

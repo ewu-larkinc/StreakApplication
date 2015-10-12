@@ -32,6 +32,7 @@ class ActivityData {
         activities = [ActivityItem]()
     }
     
+    //#MARK: - ActivityItem Management
     func addActivity(newItem: ActivityItem) {
         activities.append(newItem)
         saveActivity(newItem)
@@ -63,8 +64,10 @@ class ActivityData {
         
         print("TESTING adding item \(item.getTitle()) to core data")
         
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let managedContext = appDelegate.managedObjectContext
+        /*let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let managedContext = appDelegate.managedObjectContext*/
+        
+        let managedContext = getManagedObjectContext()
         
         let entityDescription = NSEntityDescription.entityForName(entityKeyName, inManagedObjectContext: managedContext)
         let newEntity = NSManagedObject(entity: entityDescription!, insertIntoManagedObjectContext: managedContext)
@@ -81,13 +84,16 @@ class ActivityData {
         }
     }
     
-    func fetchFromCoreData() -> [NSManagedObject] {
+    func getManagedObjectContext() -> NSManagedObjectContext {
         
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let managedContext = appDelegate.managedObjectContext
+        return appDelegate.managedObjectContext
+    }
+    
+    func fetchFromCoreData() -> [NSManagedObject] {
         
+        let managedContext = getManagedObjectContext()
         let fetchRequest = NSFetchRequest(entityName: entityKeyName)
-        
         let fetchedResults = (try! managedContext.executeFetchRequest(fetchRequest)) as! [NSManagedObject]
         
         return fetchedResults
@@ -114,8 +120,7 @@ class ActivityData {
     
     func deleteFromCoreData(item: ActivityItem) {
         
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let managedContext = appDelegate.managedObjectContext
+        let managedContext = getManagedObjectContext()
         
         let fetchRequest = NSFetchRequest(entityName: entityKeyName)
         let predicate = NSPredicate(format: "title == %@", item.getTitle())
@@ -134,10 +139,10 @@ class ActivityData {
         
     }
     
-    func updateActivityInCoreData(item: ActivityItem) {
+    func updateActivityInCoreData(index: Int) {
         
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let managedContext = appDelegate.managedObjectContext
+        let managedContext = getManagedObjectContext()
+        let item = activities[index]
         
         let fetchRequest = NSFetchRequest(entityName: entityKeyName)
         let predicate = NSPredicate(format: "title == %@", item.getTitle())

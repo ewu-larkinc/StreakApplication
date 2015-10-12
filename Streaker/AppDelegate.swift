@@ -22,6 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
         application.registerUserNotificationSettings(settings)
+        
+        //cancelling all scheduled notifications because they are rescheduled every time the app launches
+        application.cancelAllLocalNotifications()
         return true
     }
 
