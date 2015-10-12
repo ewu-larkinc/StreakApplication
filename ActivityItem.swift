@@ -10,8 +10,8 @@ import Foundation
 import UIKit
 
 enum DisplayHeight: CGFloat {
-    case Regular = 96.0
-    case Tall = 136.0
+    case Regular = 80.0
+    case Tall = 120.0
 }
 
 
@@ -77,7 +77,7 @@ class ActivityItem {
     
     
     
-    //# MARK: - Get Methods
+    //# MARK: - Get Functions
     func getTitle() -> String {
         return title
     }
@@ -112,7 +112,7 @@ class ActivityItem {
         return diff.day
     }
     
-    //#MARK: - Set Methods
+    //#MARK: - Set Functions
     func setDisplayHeight(height: CGFloat) {
         displayHeight = height
     }
@@ -156,7 +156,7 @@ class ActivityItem {
         return dateFormatter.stringFromDate(baseDate)
     }
     
-    //# MARK: - ConfirmQueue Methods
+    //# MARK: - ConfirmQueue Functions
     func dequeueConfirmString() -> String? {
         if confirmQueue.count > 0 {
             
@@ -186,13 +186,11 @@ class ActivityItem {
             let confirmDate = NSDate(timeInterval: NSTimeInterval(ctr*daySpan), sinceDate: getBaseDate())
             confirmQueue.append(confirmDate)
             ctr++
-            
-            //print("TESTING Adding \(confirmDate) to confirmQueue")
         }
         
     }
     
-    //#MARK: - DisplayMode Methods
+    //#MARK: - DisplayMode Functions
     func switchDisplayMode() {
         
         if displayMode == DisplayMode.ViewActivity.rawValue {
@@ -208,8 +206,6 @@ class ActivityItem {
     
     func updateDisplayMode() {
         
-        print("updateDisplayMode method executing...")
-        
         if confirmQueue.count == 0 {
             displayMode = DisplayMode.ViewActivity.rawValue
             displayHeight = DisplayHeight.Regular.rawValue
@@ -217,11 +213,9 @@ class ActivityItem {
             displayMode = DisplayMode.ConfirmActivity.rawValue
             displayHeight = DisplayHeight.Tall.rawValue
         }
-        
-        
     }
     
-    //#MARK: - Misc. Methods
+    //#MARK: - Misc. Functions
     func update(activityIndex: Int) {
         
         addToStreak()
@@ -258,7 +252,7 @@ class ActivityItem {
         return result
     }
     
-    //#MARK: - UILocalNotification Methods
+    //#MARK: - UILocalNotification Functions
     func scheduleLocalNotification() {
         let localNotification = UILocalNotification()
         localNotification.fireDate = lastUpdatedDates[lastUpdatedDates.count-1]

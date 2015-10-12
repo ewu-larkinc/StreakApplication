@@ -11,12 +11,9 @@ import UIKit
 
 class AddActivityViewController : UIViewController, UITextFieldDelegate {
     
+    //#MARK: - IBAction Functions
     @IBAction func cancelBtnSelected(sender: UIButton) {
-        
         hideFormItems()
-        
-        //added following method call to hideFormItems() to make process more streamlined - remove after testing
-        //showAddBtn()
     }
     
     @IBAction func submitBtnSelected(sender: UIButton) {
@@ -24,41 +21,22 @@ class AddActivityViewController : UIViewController, UITextFieldDelegate {
         let aData = ActivityData.sharedInstance
         guard let titleText = titleTextfield.text, descriptionText = descriptTextfield.text, preferredTime = aData.getCurrentlySelectedTime() else {
             
-            print("Please finish completing the new entry")
+            let alertBox = UIAlertController(title: "Incomplete Form", message: "The form has not been completed. Please provide a title, description, and preferred time.", preferredStyle: UIAlertControllerStyle.Alert)
+            let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
+            alertBox.addAction(alertAction)
+            
+            self.presentViewController(alertBox, animated: true, completion: nil)
             return
         }
         
         let newActivity = ActivityItem(title: titleText, description: descriptionText, preferredTime: preferredTime)
         aData.addActivity(newActivity)
         hideFormItems()
-        //showAddBtn()
         
         NSNotificationCenter.defaultCenter().postNotificationName("reloadTableViewData", object: self)
-        
-        //replaced with the more intent revealing code above - will remove after testing
-        
-        /*if let titleText = titleTextfield.text {
-            
-            if let descriptionText = descriptTextfield.text {
-                print("TESTING Adding new item titled \(titleText)")
-                let aData = ActivityData.sharedInstance
-                
-                if let preferredTime = aData.getCurrentlySelectedTime() {
-                    
-                    let newActivity = ActivityItem(title: titleText, description: descriptionText, preferredTime: preferredTime)
-                    aData.addActivity(newActivity)
-                    hideFormItems()
-                    //showAddBtn()
-                    
-                    NSNotificationCenter.defaultCenter().postNotificationName("reloadTableViewData", object: self)
-                }
-            }
-        }*/
-        
     }
     
     @IBAction func AddActivitySelected(sender: UIButton) {
-        //hideAddBtn()
         showFormItems()
     }
     
@@ -98,21 +76,6 @@ class AddActivityViewController : UIViewController, UITextFieldDelegate {
         let timeString = hour + ":" + minutes
         
         reminderSelectButton.setTitle(timeString, forState: UIControlState.Normal)
-        
-        //replaced with the more intent revealing code above
-        /*if let selectedTime = aData.getCurrentlySelectedTime() {
-            
-            print("TESTING currently selected time detected - changing button text now...")
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "hh"
-            let hour = dateFormatter.stringFromDate(selectedTime)
-            dateFormatter.dateFormat = "mm a"
-            let minutes = dateFormatter.stringFromDate(selectedTime)
-            
-            let timeString = hour + ":" + minutes
-            
-            reminderSelectButton.setTitle(timeString, forState: UIControlState.Normal)
-        }*/
     }
     
     func hideFormItems() {
@@ -155,7 +118,7 @@ class AddActivityViewController : UIViewController, UITextFieldDelegate {
         hideAddBtn()
     }
     
-    //#MARK -
+    //#MARK - Misc.
     func hideAddBtn() {
         addActivityBtn.hidden = true
         addActivityBtn.enabled = false
@@ -183,7 +146,7 @@ class AddActivityViewController : UIViewController, UITextFieldDelegate {
         }, completion: nil)
     }
     
-    //#MARK: - textField Delegate Methods
+    //#MARK: - UITextField Delegate Functions
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true

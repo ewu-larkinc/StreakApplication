@@ -26,8 +26,7 @@ class ListActivityViewController : UIViewController, UITableViewDataSource, UITa
     var activities = [ActivityItem]()
     
     override func viewDidLoad() {
-        tableView.separatorStyle = UITableViewCellSeparatorStyle.None
-        //tableView.backgroundView = UIImageView(image: UIImage(named: "streakBG"))
+        //tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         NSNotificationCenter.defaultCenter().removeObserver(self, name: notificationKey, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: reloadSelector, name: notificationKey, object: nil)
     }
@@ -42,14 +41,11 @@ class ListActivityViewController : UIViewController, UITableViewDataSource, UITa
         tableView.reloadData()
     }
     
-    //#MARK: - TableView Methods
+    //#MARK: - UITableView Functions
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
         let currentItem = activities[indexPath.row]
-        let height = currentItem.getDisplayHeight()
-        print("Cell height is \(height)")
-        return height
-        //return currentItem.getDisplayHeight()
+        return currentItem.getDisplayHeight()
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -87,20 +83,13 @@ class ListActivityViewController : UIViewController, UITableViewDataSource, UITa
             cell.yesBtn.enabled = true
             cell.promptLabel.hidden = false
             
-            /*guard let confirmString = currentActivity.dequeueConfirmString() else {
+            guard let confirmString = currentActivity.dequeueConfirmString() else {
                 
                 currentActivity.updateDisplayMode()
                 return cell
             }
             
-            cell.promptLabel.text = confirmString*/
-            
-            //replaced with more intent revealing code above, will remove after testing
-            if let confirmString = currentActivity.dequeueConfirmString() {
-                cell.promptLabel.text = confirmString
-            } else {
-                currentActivity.updateDisplayMode()
-            }
+            cell.promptLabel.text = confirmString
         }
         
         return cell

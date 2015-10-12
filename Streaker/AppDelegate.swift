@@ -25,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //cancelling all scheduled notifications because they are rescheduled every time the app launches
         application.cancelAllLocalNotifications()
+        application.applicationIconBadgeNumber = 0
         return true
     }
 

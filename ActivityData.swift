@@ -59,13 +59,8 @@ class ActivityData {
     }
     
     
-    //#MARK: - Core Data Methods
+    //#MARK: - Core Data Functions
     func saveActivity(item: ActivityItem) {
-        
-        print("TESTING adding item \(item.getTitle()) to core data")
-        
-        /*let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let managedContext = appDelegate.managedObjectContext*/
         
         let managedContext = getManagedObjectContext()
         
@@ -148,14 +143,12 @@ class ActivityData {
         let predicate = NSPredicate(format: "title == %@", item.getTitle())
         fetchRequest.predicate = predicate
         
-        
         let fetchedResults = (try! managedContext.executeFetchRequest(fetchRequest)) as! [NSManagedObject]
         
         if fetchedResults.count > 0 {
             
             let title = fetchedResults[0].valueForKey("title") as! String
             let baseDate = item.getBaseDate()
-            
             
             print("TESTING UpdateActivityInCoreData found a matching entity: \(title)")
             print("TESTING updating lastUpdatedDate to \(baseDate)")

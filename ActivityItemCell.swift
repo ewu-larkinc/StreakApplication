@@ -12,18 +12,15 @@ import UIKit
 class ActivityItemCell : UITableViewCell {
     
     
-    
     @IBAction func selectNoBtn(sender: UIButton) {
         let aData = ActivityData.sharedInstance
         let item = aData.activities[activityItemIndex]
-        print("No btn selected on item \(item.getTitle())")
         item.reset(activityItemIndex)
     }
     
     @IBAction func selectYesBtn(sender: UIButton) {
         let aData = ActivityData.sharedInstance
         let item = aData.activities[activityItemIndex]
-        print("Yes btn selected on item \(item.getTitle())")
         item.update(activityItemIndex)
     }
     
@@ -34,7 +31,7 @@ class ActivityItemCell : UITableViewCell {
     @IBOutlet weak var descriptLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var remindTimeLabel: UILabel!
-    @IBOutlet weak var bgView: UIView!
+    @IBOutlet weak var streakBgView: UIView!
     
     var activityItemIndex : Int = 0
     
