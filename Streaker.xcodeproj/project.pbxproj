@@ -20,6 +20,7 @@
 		226544791BC32FA20004DFCF /* ActivityItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226544781BC32FA20004DFCF /* ActivityItem.swift */; settings = {ASSET_TAGS = (); }; };
 		2265447B1BC32FB00004DFCF /* ActivityItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2265447A1BC32FB00004DFCF /* ActivityItemCell.swift */; settings = {ASSET_TAGS = (); }; };
 		2265447F1BC5DE500004DFCF /* TimePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2265447E1BC5DE500004DFCF /* TimePickerViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		22A5A00A1BD3468900232DCF /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A5A0091BD3468900232DCF /* Timer.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		226544781BC32FA20004DFCF /* ActivityItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityItem.swift; path = ../ActivityItem.swift; sourceTree = "<group>"; };
 		2265447A1BC32FB00004DFCF /* ActivityItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityItemCell.swift; path = ../ActivityItemCell.swift; sourceTree = "<group>"; };
 		2265447E1BC5DE500004DFCF /* TimePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimePickerViewController.swift; sourceTree = "<group>"; };
+		22A5A0091BD3468900232DCF /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,8 +121,9 @@
 				226544501BC32E300004DFCF /* Info.plist */,
 				226544481BC32E300004DFCF /* Streaker.xcdatamodeld */,
 				226544761BC32F980004DFCF /* ActivityData.swift */,
-				226544781BC32FA20004DFCF /* ActivityItem.swift */,
 				2265447A1BC32FB00004DFCF /* ActivityItemCell.swift */,
+				226544781BC32FA20004DFCF /* ActivityItem.swift */,
+				22A5A0091BD3468900232DCF /* Timer.swift */,
 			);
 			path = Streaker;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				226544421BC32E300004DFCF /* AppDelegate.swift in Sources */,
 				226544791BC32FA20004DFCF /* ActivityItem.swift in Sources */,
 				2265447F1BC5DE500004DFCF /* TimePickerViewController.swift in Sources */,
+				22A5A00A1BD3468900232DCF /* Timer.swift in Sources */,
 				226544751BC32F8B0004DFCF /* AddActivityViewController.swift in Sources */,
 				226544771BC32F980004DFCF /* ActivityData.swift in Sources */,
 			);

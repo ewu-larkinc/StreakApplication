@@ -11,19 +11,20 @@ import UIKit
 
 class ActivityItemCell : UITableViewCell {
     
-    
     @IBAction func selectNoBtn(sender: UIButton) {
         let aData = ActivityData.sharedInstance
         let item = aData.activities[activityItemIndex]
-        item.reset(activityItemIndex)
+        item.update(activityItemIndex, activityState: ActivityState.Denied.rawValue)
     }
     
     @IBAction func selectYesBtn(sender: UIButton) {
         let aData = ActivityData.sharedInstance
         let item = aData.activities[activityItemIndex]
-        item.update(activityItemIndex)
+        item.update(activityItemIndex, activityState: ActivityState.Confirmed.rawValue)
     }
     
+    @IBOutlet weak var bgView2: UIView!
+    @IBOutlet weak var bgView: UIView!
     @IBOutlet weak var yesBtn: UIButton!
     @IBOutlet weak var noBtn: UIButton!
     @IBOutlet weak var streakLabel: UILabel!

@@ -10,21 +10,27 @@ import Foundation
 import UIKit
 
 enum DisplayHeight: CGFloat {
-    case Regular = 80.0
-    case Tall = 120.0
+    case Regular = 83.0
+    case Tall = 126.0
+}
+
+enum ActivityState: Int {
+    case Confirmed = 1
+    case Denied = -1
 }
 
 
 class ActivityItem {
     
-    private var title:String
-    private var description:String
-    private var streakCount:Int
-    private var confirmQueue:[NSDate]
+    private var title: String
+    private var description: String
+    private var streakCount: Int
+    private var confirmQueue: [NSDate]
+    private var confirmString: String?
     private var lastUpdatedDates:[NSDate]
-    private var confirmString:String?
     private var displayMode: Int
     private var displayHeight: CGFloat
+    private var lastPrompt: Bool
     
     
     init(title: String, description: String, baseDate: NSDate, streakCount: Int) {
@@ -36,16 +42,12 @@ class ActivityItem {
         lastUpdatedDates.append(baseDate)
         displayMode = DisplayMode.ViewActivity.rawValue
         displayHeight = DisplayHeight.Regular.rawValue
+        lastPrompt = false
+        //print("TESTING current baseDate = \(lastUpdatedDates[lastUpdatedDates.count-1])")
         buildConfirmQueue()
+        ActivityItem.scheduleLocalNotification(self.title, fireDate: lastUpdatedDates[lastUpdatedDates.count-1])
+        updateDisplayMode()
         
-        //isActivityOutOfDate() returns true if baseDate != curDate (disregarding time aspect,eg only day, month, year)
-        
-        /*if confirmQueue.count > 0 {
-            switchDisplayMode()
-        }*/
-        
-        scheduleLocalNotification()
-        setDisplayMode()
     }
     
     init(title: String, description: String, preferredTime: NSDate) {
@@ -55,29 +57,24 @@ class ActivityItem {
         streakCount = 0
         confirmQueue = [NSDate]()
         displayMode = DisplayMode.ViewActivity.rawValue
+        lastPrompt = false
         
         //setting base date to 3 days previous, for testing purposes
         let daySpan = 24 * 60 * 60 as NSTimeInterval
         lastUpdatedDates = [NSDate]()
         lastUpdatedDates.append(NSDate(timeIntervalSinceNow: -daySpan*3))
         setPreferredTimeOnBaseDate(preferredTime)
-        
-        //may want to add closure to following method to call setDisplayMode - to guarantee that the buildConfirmQueue method has executed before we check the size of confirm queue to determine the display mode later on
         buildConfirmQueue()
         
-        print("TESTING current baseDate = \(lastUpdatedDates[lastUpdatedDates.count-1])")
+        //print("TESTING current baseDate = \(lastUpdatedDates[lastUpdatedDates.count-1])")
         
-        /*if confirmQueue.count > 0 {
-            switchDisplayMode()
-        }*/
-        
-        scheduleLocalNotification()
-        setDisplayMode()
+        ActivityItem.scheduleLocalNotification(self.title, fireDate: lastUpdatedDates[lastUpdatedDates.count-1])
+        updateDisplayMode()
     }
     
     
     
-    //# MARK: - Get Functions
+    //# MARK: - Get 
     func getTitle() -> String {
         return title
     }
@@ -112,19 +109,13 @@ class ActivityItem {
         return diff.day
     }
     
-    //#MARK: - Set Functions
-    func setDisplayHeight(height: CGFloat) {
-        displayHeight = height
+    func getConfirmString() -> String? {
+        return confirmString
     }
     
-    func setDisplayMode() {
-        if confirmQueue.count > 0 {
-            displayMode = DisplayMode.ConfirmActivity.rawValue
-            displayHeight = DisplayHeight.Tall.rawValue
-        } else {
-            displayMode = DisplayMode.ViewActivity.rawValue
-            displayHeight = DisplayHeight.Regular.rawValue
-        }
+    //#MARK: - Set 
+    func setDisplayHeight(height: CGFloat) {
+        displayHeight = height
     }
     
     func setPreferredTimeOnBaseDate(preferredTime: NSDate) {
@@ -142,7 +133,7 @@ class ActivityItem {
         print("DateComponents contains: \(baseDateComponents.date)")
         
         if let newBaseDate = baseDateComponents.date {
-            print("TESTING Updating basedate to reflect preferredtime. baseDate set to \(newBaseDate)")
+            //print("TESTING Updating basedate to reflect preferredtime. baseDate set to \(newBaseDate)")
             lastUpdatedDates.append(newBaseDate)
         }
         
@@ -156,9 +147,16 @@ class ActivityItem {
         return dateFormatter.stringFromDate(baseDate)
     }
     
-    //# MARK: - ConfirmQueue Functions
+    func resetConfirmString() {
+        confirmString = nil
+    }
+    
+    //# MARK: - ConfirmQueue 
     func dequeueConfirmString() -> String? {
-        if confirmQueue.count > 0 {
+        
+        var cs: String?
+        
+        if confirmString == nil && confirmQueue.count > 0 {
             
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = "MM/dd"
@@ -168,21 +166,53 @@ class ActivityItem {
             lastUpdatedDates.append(confirmQueue.removeAtIndex(0))
             
             //print("TESTING Adding \(dateString) to lastUpdatedDates array")
+            confirmString = "Did you \(title) on \(dateString)?"
             
-            return "Did you \(title) on \(dateString)?"
+            cs = confirmString
+            
+        } else if confirmString != nil && confirmQueue.count > 0 {
+            cs = confirmString
+        } else {
+            cs = confirmString
         }
         
-        return nil
+        print("Dequeuing \(confirmString) from confirmQueue for activity: \(self.title)")
+        return cs
     }
     
+/*func dequeueConfirmString() -> String? {
+
+if confirmQueue.count > 0 {
+
+if let cs = confirmString {
+return cs
+} else {//only dispatch new confirmString if the last one was used and reset to nil
+let dateFormatter = NSDateFormatter()
+dateFormatter.dateFormat = "MM/dd"
+dateFormatter.timeZone = NSTimeZone()
+
+let dateString = dateFormatter.stringFromDate(confirmQueue[0])
+lastUpdatedDates.append(confirmQueue.removeAtIndex(0))
+
+//print("TESTING Adding \(dateString) to lastUpdatedDates array")
+confirmString = "Did you \(title) on \(dateString)?"
+
+return confirmString
+}
+}
+
+confirmString = nil
+return confirmString
+}*/
+
     func buildConfirmQueue() {
-        
+
         let daySpan = 24 * 60 * 60
         var ctr = 1
         let numDays = getNumDaysSinceUpdated()
-        
+
         while (ctr <= numDays) {
-            
+
             let confirmDate = NSDate(timeInterval: NSTimeInterval(ctr*daySpan), sinceDate: getBaseDate())
             confirmQueue.append(confirmDate)
             ctr++
@@ -190,8 +220,7 @@ class ActivityItem {
         
     }
     
-    //#MARK: - DisplayMode Functions
-    func switchDisplayMode() {
+    /*func switchDisplayMode() {
         
         if displayMode == DisplayMode.ViewActivity.rawValue {
             displayMode = DisplayMode.ConfirmActivity.rawValue
@@ -200,8 +229,6 @@ class ActivityItem {
             displayMode = DisplayMode.ViewActivity.rawValue
             displayHeight = DisplayHeight.Regular.rawValue
         }
-        
-        
     }
     
     func updateDisplayMode() {
@@ -213,25 +240,58 @@ class ActivityItem {
             displayMode = DisplayMode.ConfirmActivity.rawValue
             displayHeight = DisplayHeight.Tall.rawValue
         }
-    }
+    }*/
     
-    //#MARK: - Misc. Functions
-    func update(activityIndex: Int) {
+    //#MARK: - Miscellaneous
+    func update(activityIndex: Int, activityState: Int) {
         
-        addToStreak()
+        if activityState == ActivityState.Confirmed.rawValue {
+            addToStreak()
+        } else {
+            resetStreak()
+        }
+        
+        confirmString = nil
         updateDisplayMode()
         let aData = ActivityData.sharedInstance
         aData.updateActivityInCoreData(activityIndex)
-        NSNotificationCenter.defaultCenter().postNotificationName("reloadTableViewData", object: self)
+        NSNotificationCenter.defaultCenter().postNotificationName("reloadTableViewData", object: activityIndex)
     }
     
-    func reset(activityIndex: Int) {
+    func updateDisplayMode() {
+        
+        if let _ = getConfirmString() {
+            print("updateDisplayMode is executing and setting mode to confirm")
+            displayMode = DisplayMode.ConfirmActivity.rawValue
+            displayHeight = DisplayHeight.Tall.rawValue
+        } else if confirmQueue.count > 0 {
+            print("updateDisplayMode is executing and were setting confirm mode!")
+            displayMode = DisplayMode.ConfirmActivity.rawValue
+            displayHeight = DisplayHeight.Tall.rawValue
+        }
+        else {
+            print("updateDisplayMode is executing without any confirmString - mode set to view")
+            displayMode = DisplayMode.ViewActivity.rawValue
+            displayHeight = DisplayHeight.Regular.rawValue
+        }
+        
+        /*if confirmQueue.count > 0 {
+        displayMode = DisplayMode.ConfirmActivity.rawValue
+        displayHeight = DisplayHeight.Tall.rawValue
+        } else {
+        displayMode = DisplayMode.ViewActivity.rawValue
+        displayHeight = DisplayHeight.Regular.rawValue
+        }*/
+    }
+    
+    //Deprecated
+    /*func reset(activityIndex: Int) {
         resetStreak()
         updateDisplayMode()
         let aData = ActivityData.sharedInstance
         aData.updateActivityInCoreData(activityIndex)
         NSNotificationCenter.defaultCenter().postNotificationName("reloadTableViewData", object: self)
-    }
+    }*/
     
     func addToStreak() {
         streakCount++
@@ -241,7 +301,7 @@ class ActivityItem {
         streakCount = 0
     }
     
-    func capitalizeEntireString(string: String) -> String {
+    static func capitalizeEntireString(string: String) -> String {
         var result: String = ""
         var temp: String
         for char in string.characters {
@@ -252,14 +312,15 @@ class ActivityItem {
         return result
     }
     
-    //#MARK: - UILocalNotification Functions
-    func scheduleLocalNotification() {
+    //#MARK: - UILocalNotification 
+    static func scheduleLocalNotification(activityTitle: String, fireDate: NSDate) {
         let localNotification = UILocalNotification()
-        localNotification.fireDate = lastUpdatedDates[lastUpdatedDates.count-1]
-        localNotification.alertBody = "Did you \(self.title) today?"
+        localNotification.fireDate = fireDate
+        localNotification.alertBody = "Did you \(activityTitle) today?"
         localNotification.timeZone = NSTimeZone.defaultTimeZone()
         localNotification.applicationIconBadgeNumber = UIApplication.sharedApplication().applicationIconBadgeNumber + 1
         localNotification.repeatInterval = NSCalendarUnit.Day
+        localNotification.soundName = UILocalNotificationDefaultSoundName
         
         UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
     }

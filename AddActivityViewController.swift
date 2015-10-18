@@ -11,27 +11,37 @@ import UIKit
 
 class AddActivityViewController : UIViewController, UITextFieldDelegate {
     
+    
     //#MARK: - IBAction Functions
     @IBAction func cancelBtnSelected(sender: UIButton) {
         hideFormItems()
+        clearEntries()
     }
     
     @IBAction func submitBtnSelected(sender: UIButton) {
         
         let aData = ActivityData.sharedInstance
-        guard let titleText = titleTextfield.text, descriptionText = descriptTextfield.text, preferredTime = aData.getCurrentlySelectedTime() else {
+        
+        //no longer using guard below, because textfields dont return nil when empty, so I have to make an explicit count check on the title and description fields before creating a new activity item.
+        if let titleText = titleTextfield.text, descriptionText = descriptTextfield.text, preferredTime = aData.getCurrentlySelectedTime() {
             
-            let alertBox = UIAlertController(title: "Incomplete Form", message: "The form has not been completed. Please provide a title, description, and preferred time.", preferredStyle: UIAlertControllerStyle.Alert)
-            let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-            alertBox.addAction(alertAction)
+            if titleText.characters.count == 0 && descriptionText.characters.count == 0 {
+                let alertBox = UIAlertController(title: "Incomplete Form", message: "The form has not been completed. Please provide a title, description, and preferred time.", preferredStyle: UIAlertControllerStyle.Alert)
+                let alertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
+                alertBox.addAction(alertAction)
             
-            self.presentViewController(alertBox, animated: true, completion: nil)
-            return
+                self.presentViewController(alertBox, animated: true, completion: nil)
+                return
+                
+            } else {
+                //print("Testing... new title is \(titleText) and description is \(descriptionText)")
+                let newActivity = ActivityItem(title: titleText, description: descriptionText, preferredTime: preferredTime)
+                aData.addActivity(newActivity)
+                hideFormItems()
+                clearEntries()
+            }
         }
         
-        let newActivity = ActivityItem(title: titleText, description: descriptionText, preferredTime: preferredTime)
-        aData.addActivity(newActivity)
-        hideFormItems()
         
         NSNotificationCenter.defaultCenter().postNotificationName("reloadTableViewData", object: self)
     }
@@ -40,20 +50,45 @@ class AddActivityViewController : UIViewController, UITextFieldDelegate {
         showFormItems()
     }
     
-    @IBOutlet weak var submitBtn: UIButton!
+    
     @IBOutlet weak var descriptTextfield: UITextField!
+    @IBOutlet weak var titleTextfield: UITextField!
+    @IBOutlet weak var reminderTimeLabel: UILabel!
     @IBOutlet weak var descriptLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var titleTextfield: UITextField!
     @IBOutlet weak var addActivityBtn: UIButton!
-    @IBOutlet weak var reminderSelectButton: UIButton!
-    @IBOutlet weak var reminderTimeLabel: UILabel!
     @IBOutlet weak var cancelBtn: UIButton!
-    
+    @IBOutlet weak var reminderSelectButton: UIButton!
+    @IBOutlet weak var submitBtn: UIButton!
+    @IBOutlet weak var addActivityLabel: UILabel!
+    @IBOutlet weak var addActivityButtonView: UIView!
+    @IBOutlet weak var addActivityImage: UIImageView!
     
     override func viewDidLoad() {
         descriptTextfield.delegate = self
         titleTextfield.delegate = self
+        
+        
+        
+        //set drop shadow and corner radius on add activity button view, and all buttons.
+        addActivityButtonView.layer.shadowOpacity = 0.7
+        addActivityButtonView.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+        addActivityButtonView.layer.shadowRadius = 3
+        
+        reminderSelectButton.layer.shadowOpacity = 0.7
+        reminderSelectButton.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+        reminderSelectButton.layer.shadowRadius = 1
+        reminderSelectButton.layer.cornerRadius = 3
+        
+        submitBtn.layer.shadowOpacity = 0.7
+        submitBtn.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+        submitBtn.layer.shadowRadius = 1
+        submitBtn.layer.cornerRadius = 3
+        
+        cancelBtn.layer.shadowOpacity = 0.7
+        cancelBtn.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+        cancelBtn.layer.shadowRadius = 1
+        cancelBtn.layer.cornerRadius = 3
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -66,7 +101,7 @@ class AddActivityViewController : UIViewController, UITextFieldDelegate {
             return
         }
         
-        print("TESTING currently selected time detected - changing button text now...")
+        //print("TESTING currently selected time detected - changing button text now...")
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "hh"
         let hour = dateFormatter.stringFromDate(selectedTime)
@@ -78,6 +113,7 @@ class AddActivityViewController : UIViewController, UITextFieldDelegate {
         reminderSelectButton.setTitle(timeString, forState: UIControlState.Normal)
     }
     
+    //#MARK: - Misc. Functions
     func hideFormItems() {
         descriptLabel.hidden = true
         descriptLabel.enabled = false
@@ -95,6 +131,11 @@ class AddActivityViewController : UIViewController, UITextFieldDelegate {
         submitBtn.hidden = true
         cancelBtn.hidden = true
         cancelBtn.enabled = false
+        addActivityButtonView.hidden = false
+        addActivityBtn.hidden = false
+        addActivityBtn.enabled = true
+        //addActivityLabel.hidden = true
+        //addActivityLabel.enabled = false
         
         showAddBtn()
     }
@@ -114,11 +155,23 @@ class AddActivityViewController : UIViewController, UITextFieldDelegate {
         submitBtn.hidden = false
         cancelBtn.enabled = true
         cancelBtn.hidden = false
+        addActivityButtonView.hidden = true
+        addActivityBtn.hidden = true
+        addActivityBtn.enabled = false
+        //addActivityLabel.hidden = false
+        //addActivityLabel.enabled = true
         
         hideAddBtn()
     }
     
-    //#MARK - Misc.
+    func clearEntries() {
+        titleTextfield.text = nil
+        descriptTextfield.text = nil
+        let aData = ActivityData.sharedInstance
+        aData.resetCurrentlySelectedTime()
+        reminderSelectButton.setTitle("Select Time", forState: UIControlState.Normal)
+    }
+    
     func hideAddBtn() {
         addActivityBtn.hidden = true
         addActivityBtn.enabled = false
@@ -146,7 +199,7 @@ class AddActivityViewController : UIViewController, UITextFieldDelegate {
         }, completion: nil)
     }
     
-    //#MARK: - UITextField Delegate Functions
+    //#MARK: - UITextField
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true

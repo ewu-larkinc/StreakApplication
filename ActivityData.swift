@@ -58,6 +58,10 @@ class ActivityData {
         return currentlySelectedTime
     }
     
+    func resetCurrentlySelectedTime() {
+        currentlySelectedTime = nil
+    }
+    
     
     //#MARK: - Core Data Functions
     func saveActivity(item: ActivityItem) {
@@ -71,6 +75,8 @@ class ActivityData {
         newEntity.setValue(item.getDescription(), forKey: entityKeyDescription)
         newEntity.setValue(item.getStreakCount(), forKey: entityBaseCount)
         newEntity.setValue(item.getBaseDate(), forKey: entityBaseDate)
+        
+        print("Saving \(item.getTitle()) to core data")
         
         do {
             try managedContext.save()
@@ -152,7 +158,7 @@ class ActivityData {
             
             print("TESTING UpdateActivityInCoreData found a matching entity: \(title)")
             print("TESTING updating lastUpdatedDate to \(baseDate)")
-            print("TESTING updating streakCount to \(item.getStreakCount())")
+            //print("TESTING updating streakCount to \(item.getStreakCount())")
             
             fetchedResults[0].setValue(baseDate, forKey: "baseDate")
             fetchedResults[0].setValue(item.getStreakCount(), forKey: "streakCount")

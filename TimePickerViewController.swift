@@ -10,6 +10,10 @@ import Foundation
 import UIKit
 
 class TimePickerViewController : UIViewController {
+    @IBAction func cancelButtonSelected(sender: UIButton) {
+        datePicker.reloadInputViews()
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
     
     @IBAction func confirmButtonSelected(sender: UIButton) {
         
@@ -18,17 +22,10 @@ class TimePickerViewController : UIViewController {
         
         let aData = ActivityData.sharedInstance
         aData.setCurrentlySelectedTime(datePicker.date)
+        datePicker.reloadInputViews()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    
-    @IBAction func datePickerChanged(sender: AnyObject) {
-        
-    }
-    
     @IBOutlet weak var datePicker: UIDatePicker!
-    
-    
-    
     
 }
