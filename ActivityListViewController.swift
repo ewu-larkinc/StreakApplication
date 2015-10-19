@@ -17,7 +17,9 @@ enum DisplayMode: Int {
 }
 
 class ListActivityViewController : UIViewController, UITableViewDataSource, UITableViewDelegate {
+    @IBOutlet weak var navLabel: UILabel!
     
+    @IBOutlet weak var navBarView: UIView!
     @IBOutlet weak var tableView: UITableView!
     
     let cellID = "ActivityItemCell"
@@ -27,6 +29,9 @@ class ListActivityViewController : UIViewController, UITableViewDataSource, UITa
     
     override func viewDidLoad() {
         tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        navBarView.layer.borderWidth = 0.5
+        navBarView.layer.borderColor = navLabel.textColor.CGColor
+        
         NSNotificationCenter.defaultCenter().removeObserver(self, name: notificationKey, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: reloadSelector, name: notificationKey, object: nil)
     }
@@ -63,8 +68,9 @@ class ListActivityViewController : UIViewController, UITableViewDataSource, UITa
         
         //Using 2 background views here because setting the masksToBounds property to true cancels out the border shadow when applied to the same element. So the content is contained within the top bgView, with masksToBounds set to true, and the underlying bgView has the border shadow applied
         cell.bgView2.layer.shadowOpacity = 0.7
-        cell.bgView2.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+        cell.bgView2.layer.shadowOffset = CGSize(width: 0.0, height: 0.5)
         cell.bgView2.layer.shadowRadius = 1
+        cell.bgView2.layer.shadowColor = UIColor.darkGrayColor().CGColor
         cell.bgView.layer.cornerRadius = 3.0
         cell.bgView2.layer.cornerRadius = 3.0
         cell.bgView.layer.masksToBounds = true
@@ -88,14 +94,14 @@ class ListActivityViewController : UIViewController, UITableViewDataSource, UITa
             print("TESTING Display mode set to Confirm Activity")
             cell.noBtn.hidden = false
             cell.noBtn.enabled = true
-            cell.noBtn.layer.shadowOpacity = 0.7
+            /*cell.noBtn.layer.shadowOpacity = 0.7
             cell.noBtn.layer.shadowOffset = CGSize(width: 0.0, height: 0.5)
-            cell.noBtn.layer.shadowRadius = 1
+            cell.noBtn.layer.shadowRadius = 1*/
             cell.yesBtn.hidden = false
             cell.yesBtn.enabled = true
-            cell.yesBtn.layer.shadowOpacity = 0.7
+            /*cell.yesBtn.layer.shadowOpacity = 0.7
             cell.yesBtn.layer.shadowOffset = CGSize(width: 0.0, height: 0.5)
-            cell.yesBtn.layer.shadowRadius = 1
+            cell.yesBtn.layer.shadowRadius = 1*/
             cell.promptLabel.hidden = false
             
             if let confirmString = currentActivity.dequeueConfirmString() {

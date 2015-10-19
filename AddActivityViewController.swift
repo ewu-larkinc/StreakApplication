@@ -10,6 +10,10 @@ import Foundation
 import UIKit
 
 class AddActivityViewController : UIViewController, UITextFieldDelegate {
+    @IBOutlet weak var titleImageView: UIImageView!
+    
+    @IBOutlet weak var formBackgroundView: UIView!
+    
     
     
     //#MARK: - IBAction Functions
@@ -23,7 +27,7 @@ class AddActivityViewController : UIViewController, UITextFieldDelegate {
         let aData = ActivityData.sharedInstance
         
         //no longer using guard below, because textfields dont return nil when empty, so I have to make an explicit count check on the title and description fields before creating a new activity item.
-        if let titleText = titleTextfield.text, descriptionText = descriptTextfield.text, preferredTime = aData.getCurrentlySelectedTime() {
+        if let titleText = titleTextfield.text?.capitalizedString, descriptionText = descriptTextfield.text?.capitalizedString, preferredTime = aData.getCurrentlySelectedTime() {
             
             if titleText.characters.count == 0 && descriptionText.characters.count == 0 {
                 let alertBox = UIAlertController(title: "Incomplete Form", message: "The form has not been completed. Please provide a title, description, and preferred time.", preferredStyle: UIAlertControllerStyle.Alert)
@@ -53,9 +57,9 @@ class AddActivityViewController : UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var descriptTextfield: UITextField!
     @IBOutlet weak var titleTextfield: UITextField!
-    @IBOutlet weak var reminderTimeLabel: UILabel!
+    /*@IBOutlet weak var reminderTimeLabel: UILabel!
     @IBOutlet weak var descriptLabel: UILabel!
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!*/
     @IBOutlet weak var addActivityBtn: UIButton!
     @IBOutlet weak var cancelBtn: UIButton!
     @IBOutlet weak var reminderSelectButton: UIButton!
@@ -63,32 +67,45 @@ class AddActivityViewController : UIViewController, UITextFieldDelegate {
     @IBOutlet weak var addActivityLabel: UILabel!
     @IBOutlet weak var addActivityButtonView: UIView!
     @IBOutlet weak var addActivityImage: UIImageView!
+    @IBOutlet weak var preferredTimeTextfield: UITextField!
+    
+    private var formColor = UIColor()
     
     override func viewDidLoad() {
         descriptTextfield.delegate = self
         titleTextfield.delegate = self
+        formColor = addActivityLabel.textColor
         
-        
+        //self.tabBarController?.tabBar.backgroundColor = UIColor.whiteColor()
+        tabBarController?.tabBar.barTintColor = UIColor.whiteColor()
         
         //set drop shadow and corner radius on add activity button view, and all buttons.
+        titleImageView.layer.shadowOpacity = 0.7
+        titleImageView.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+        titleImageView.layer.shadowRadius = 1
+        
         addActivityButtonView.layer.shadowOpacity = 0.7
         addActivityButtonView.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
-        addActivityButtonView.layer.shadowRadius = 3
+        addActivityButtonView.layer.shadowRadius = 1
+        addActivityButtonView.layer.cornerRadius = 3
         
-        reminderSelectButton.layer.shadowOpacity = 0.7
+        /*reminderSelectButton.layer.shadowOpacity = 0.7
         reminderSelectButton.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
-        reminderSelectButton.layer.shadowRadius = 1
-        reminderSelectButton.layer.cornerRadius = 3
+        reminderSelectButton.layer.shadowRadius = 1*/
+        reminderSelectButton.layer.cornerRadius = 5
         
-        submitBtn.layer.shadowOpacity = 0.7
+        /*submitBtn.layer.shadowOpacity = 0.7
         submitBtn.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
-        submitBtn.layer.shadowRadius = 1
-        submitBtn.layer.cornerRadius = 3
+        submitBtn.layer.shadowRadius = 1*/
+        submitBtn.layer.cornerRadius = 5
         
-        cancelBtn.layer.shadowOpacity = 0.7
+        /*cancelBtn.layer.shadowOpacity = 0.7
         cancelBtn.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
-        cancelBtn.layer.shadowRadius = 1
-        cancelBtn.layer.cornerRadius = 3
+        cancelBtn.layer.shadowRadius = 1*/
+        cancelBtn.layer.cornerRadius = 5
+        
+        formBackgroundView.layer.cornerRadius = 5
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -110,17 +127,18 @@ class AddActivityViewController : UIViewController, UITextFieldDelegate {
         
         let timeString = hour + ":" + minutes
         
-        reminderSelectButton.setTitle(timeString, forState: UIControlState.Normal)
+        preferredTimeTextfield.text = timeString
+        //reminderSelectButton.setTitle(timeString, forState: UIControlState.Normal)
     }
     
     //#MARK: - Misc. Functions
     func hideFormItems() {
-        descriptLabel.hidden = true
+        /*descriptLabel.hidden = true
         descriptLabel.enabled = false
         titleLabel.hidden = true
         titleLabel.enabled = false
         reminderTimeLabel.hidden = true
-        reminderTimeLabel.enabled = false
+        reminderTimeLabel.enabled = false*/
         descriptTextfield.hidden = true
         descriptTextfield.enabled = false
         reminderSelectButton.hidden = true
@@ -134,6 +152,13 @@ class AddActivityViewController : UIViewController, UITextFieldDelegate {
         addActivityButtonView.hidden = false
         addActivityBtn.hidden = false
         addActivityBtn.enabled = true
+        preferredTimeTextfield.hidden = true
+        preferredTimeTextfield.enabled = false
+        formBackgroundView.backgroundColor = UIColor.whiteColor()
+        
+        formBackgroundView.layer.shadowOpacity = 0
+        formBackgroundView.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
+        formBackgroundView.layer.shadowRadius = 0
         //addActivityLabel.hidden = true
         //addActivityLabel.enabled = false
         
@@ -141,14 +166,14 @@ class AddActivityViewController : UIViewController, UITextFieldDelegate {
     }
     
     func showFormItems() {
-        descriptLabel.hidden = false
-        titleLabel.hidden = false
+        /*descriptLabel.hidden = false
+        titleLabel.hidden = false*/
         descriptTextfield.hidden = false
         descriptTextfield.enabled = true
         reminderSelectButton.hidden = false
         reminderSelectButton.enabled = true
-        reminderTimeLabel.hidden = false
-        reminderTimeLabel.enabled = true
+        /*reminderTimeLabel.hidden = false
+        reminderTimeLabel.enabled = true*/
         titleTextfield.hidden = false
         titleTextfield.enabled = true
         submitBtn.enabled = true
@@ -158,6 +183,13 @@ class AddActivityViewController : UIViewController, UITextFieldDelegate {
         addActivityButtonView.hidden = true
         addActivityBtn.hidden = true
         addActivityBtn.enabled = false
+        preferredTimeTextfield.hidden = false
+        preferredTimeTextfield.enabled = true
+        formBackgroundView.backgroundColor = formColor
+        
+        formBackgroundView.layer.shadowOpacity = 0.7
+        formBackgroundView.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+        formBackgroundView.layer.shadowRadius = 1
         //addActivityLabel.hidden = false
         //addActivityLabel.enabled = true
         
@@ -167,6 +199,7 @@ class AddActivityViewController : UIViewController, UITextFieldDelegate {
     func clearEntries() {
         titleTextfield.text = nil
         descriptTextfield.text = nil
+        preferredTimeTextfield.text = nil
         let aData = ActivityData.sharedInstance
         aData.resetCurrentlySelectedTime()
         reminderSelectButton.setTitle("Select Time", forState: UIControlState.Normal)
