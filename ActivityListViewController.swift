@@ -46,7 +46,6 @@ class ListActivityViewController : UIViewController, UITableViewDataSource, UITa
         tableView.reloadData()
         //tableView.beginUpdates()
         //tableView.endUpdates()
-        
     }
     
     //#MARK: - UITableView Functions
